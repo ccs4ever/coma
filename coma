@@ -1099,7 +1099,7 @@ def cmd_mail(argv, cmd="mail")
         puts
         puts body
       else
-        IO.popen("msmtp --syslog=on --read-recipients --read-envelope-from --user=#{from}", "w") { |out|
+        IO.popen("sendmail -t", "w") { |out|
           out.write headers
           out.write "\n"
           out.write body
