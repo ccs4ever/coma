@@ -1093,6 +1093,7 @@ def cmd_mail(argv, cmd="mail")
           cmd_copy([out.path, fcc])
         }
       end
+
 	  if mail_cmd = $CONFIG["sendmail"]
 	  	  mail_cmd = mail_cmd.gsub(/[^\\]%(.)/) { |match|
 			  case $1
@@ -1100,14 +1101,15 @@ def cmd_mail(argv, cmd="mail")
 				  match[0].chr + from
 			  end
 		  }
-		  puts mail_cmd
+	  else
+		  mail_cmd = "sendmail -t"
 	  end
       if opts['debug']
         puts headers
         puts
         puts body
       else
-        IO.popen(mail_cmd || "sendmail -t", "w") { |out|
+        IO.popen(mail_cmd, "w") { |out|
           out.write headers
           out.write "\n"
           out.write body
