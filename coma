@@ -1093,18 +1093,26 @@ def cmd_mail(argv, cmd="mail")
           cmd_copy([out.path, fcc])
         }
       end
-
+	  if mail_cmd = $CONFIG["sendmail"]
+	  	  mail_cmd = mail_cmd.gsub(/[^\\]%(.)/) { |match|
+			  case $1
+			  when "F"
+				  match[0].chr + from
+			  end
+		  }
+		  puts mail_cmd
+	  end
       if opts['debug']
         puts headers
         puts
         puts body
       else
-        IO.popen("sendmail -t", "w") { |out|
+        IO.popen(mail_cmd || "sendmail -t", "w") { |out|
           out.write headers
           out.write "\n"
           out.write body
         }
-        abort "sendmail failed"  unless $?.success?
+        abort "Your message could not be sent."  unless $?.success?
       end
     }
   }

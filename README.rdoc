@@ -200,6 +200,7 @@ You can create a ~/.config/coma/config like this:
 
   path: /path/to/your/maildirs
   scan: -default -arguments -for -scan
+  sendmail: sendmail -t
   %alias: %for +often +needed %sequence +expressions
 
 == Dependencies
